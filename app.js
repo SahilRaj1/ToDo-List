@@ -5,13 +5,12 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 
 const app = express();
-const port = 3000;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-raj24sahil:mongosahil@cluster0.thhqk.mongodb.net/todolistDB")
+mongoose.connect("mongodb+srv://admin-raj24sahil:mongosahil@cluster0.thhqk.mongodb.net/todolistDB");
 
 const itemsSchema = {
     name: String
@@ -34,7 +33,7 @@ const defaultItems = [item1, item2, item3];
 const listSchema = {
     name: String,
     items: [itemsSchema]
-}
+};
 
 const List = mongoose.model("List", listSchema);
 
@@ -56,7 +55,7 @@ app.get("/", (req, res)=> {
             // console.log(foundItems);
             res.render("list", {listTitle: "Today", newItems: foundItems});
         }
-    })
+    });
 
 });
 
@@ -72,10 +71,10 @@ app.get("/:customListName", (req, res)=> {
                 });
             
                 list.save();
-                res.redirect(`/${customListName}`)
+                res.redirect(`/${customListName}`);
             } else {
                 // console.log(foundList);
-                res.render("list", {listTitle: foundList[0].name, newItems: foundList[0].items})
+                res.render("list", {listTitle: foundList[0].name, newItems: foundList[0].items});
             }
         }
     });
@@ -100,7 +99,7 @@ app.post("/", (req, res)=> {
             res.redirect(`/${listName}`);
         });
     }
-})
+});
 
 app.post("/delete", (req, res)=> {
     const delItem = req.body.deleteItem;
@@ -127,9 +126,13 @@ app.post("/delete", (req, res)=> {
 
 app.use((req, res)=> {
     res.status(404).send(`<h1>Error 404<br>Page not Found<h1>`);
-})
-
-app.listen(port, ()=> {
-    console.log(`Server is running on port ${port}...`);
 });
 
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 3000;
+}
+app.listen(port, ()=> {
+    console.log("Sever has started sucessfully");
+});
