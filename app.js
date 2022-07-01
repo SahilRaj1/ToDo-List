@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
@@ -11,7 +10,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect(process.env.DATABASE);
+mongoose.connect("mongodb+srv://admin-raj24sahil:mongosahil@cluster0.thhqk.mongodb.net/todolistDB");
 
 const itemsSchema = mongoose.Schema({
     name: String
